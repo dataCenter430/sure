@@ -23,6 +23,11 @@ en:
       new_transaction: New transaction
     show:
       account_label: Account
+      attachments_title: Attachments
+      attachments_empty: No files attached. Upload receipts or documents to attach them to this transaction.
+      attachment_upload: Upload
+      attachment_delete: Remove
+      attachment_delete_confirm: Remove this attachment?
       amount: Amount
       category_label: Category
       date_label: Date

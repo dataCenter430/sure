@@ -1,0 +1,8 @@
+---
+en:
+  transaction_attachments:
+    create:
+      missing_file: Please select a file to attach.
+      success: Attachment added.
+    destroy:
+      success: Attachment removed.

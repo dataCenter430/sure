@@ -77,6 +77,14 @@ module Family::VectorSearchable
     true
   end
 
+  def find_family_document_for_transaction_attachment(transaction_id:, attachment_id:)
+    family_documents.find_by(
+      "metadata->>'transaction_id' = ? AND metadata->>'attachment_id' = ?",
+      transaction_id.to_s,
+      attachment_id.to_s
+    )
+  end
+
   private
 
     def vector_store_adapter

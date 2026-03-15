@@ -76,4 +76,10 @@ module TransactionsHelper
       }
     end
   end
+
+  # Comma-separated list of file extensions for the vector store attachment file input.
+  # Used so uploads are limited to types the vector store can index.
+  def vector_store_attachment_accepted_types
+    VectorStore::Base::SUPPORTED_EXTENSIONS.join(",")
+  end
 end

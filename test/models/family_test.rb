@@ -206,4 +206,34 @@ class FamilyTest < ActiveSupport::TestCase
     assert_equal({ "type" => "financial_document" }, document.metadata)
     assert_equal "vs_test123", family.reload.vector_store_id
   end
+
+  test "find_family_document_for_transaction_attachment returns document when metadata matches" do
+    family = families(:dylan_family)
+    doc = family.family_documents.create!(
+      filename: "receipt.pdf",
+      content_type: "application/pdf",
+      file_size: 100,
+      provider_file_id: "file-123",
+      status: "ready",
+      metadata: { "transaction_id" => "tx-uuid", "attachment_id" => "att-uuid" }
+    )
+
+    found = family.find_family_document_for_transaction_attachment(
+      transaction_id: "tx-uuid",
+      attachment_id: "att-uuid"
+    )
+
+    assert_equal doc, found
+  end
+
+  test "find_family_document_for_transaction_attachment returns nil when no match" do
+    family = families(:dylan_family)
+
+    found = family.find_family_document_for_transaction_attachment(
+      transaction_id: "nonexistent",
+      attachment_id: "nonexistent"
+    )
+
+    assert_nil found
+  end
 end

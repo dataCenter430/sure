@@ -123,6 +123,38 @@
                 "data-auto-submit-form-target": "auto" %>
       <% end %>
     <% end %>
+    <% dialog.with_section(title: t(".attachments_title")) do %>
+      <div class="space-y-3">
+        <% if @entry.transaction.attachments.attached? %>
+          <ul class="space-y-2">
+            <% @entry.transaction.attachments.each do |attachment| %>
+              <li class="flex items-center justify-between gap-2 rounded-lg border border-primary p-2">
+                <%= link_to attachment.filename,
+                    rails_blob_path(attachment),
+                    class: "text-sm text-primary truncate flex-1 min-w-0",
+                    target: "_blank",
+                    rel: "noopener" %>
+                <%= button_to t(".attachment_delete"),
+                    transaction_attachment_path(@entry.transaction, attachment),
+                    method: :delete,
+                    class: "btn btn--outline btn--sm",
+                    data: { turbo_confirm: t(".attachment_delete_confirm") } %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-sm text-secondary"><%= t(".attachments_empty") %></p>
+        <% end %>
+        <%= form_with url: transaction_attachments_path(@entry.transaction),
+            method: :post,
+            local: true,
+            class: "flex flex-wrap items-center gap-2",
+            data: { turbo: false } do |f| %>
+          <%= f.file_field :file, accept: vector_store_attachment_accepted_types, class: "text-sm text-primary" %>
+          <%= f.submit t(".attachment_upload"), class: "btn btn--primary btn--sm" %>
+        <% end %>
+      </div>
+    <% end %>
     <% if (details = build_transaction_extra_details(@entry)) %>
       <% dialog.with_section(title: "Additional details", open: false) do %>
         <div class="px-3 py-2 space-y-3">

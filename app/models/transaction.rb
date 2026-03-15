@@ -7,6 +7,8 @@ class Transaction < ApplicationRecord
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings
 
+  has_many_attached :attachments, dependent: :purge_later
+
   accepts_nested_attributes_for :taggings, allow_destroy: true
 
   after_save :clear_merchant_unlinked_association, if: :merchant_id_previously_changed?
